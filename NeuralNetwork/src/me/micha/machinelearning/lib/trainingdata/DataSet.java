@@ -1,14 +1,15 @@
-package me.micha.machinelearning;
+package me.micha.machinelearning.lib.trainingdata;
 
-import java.util.Random;
+import me.micha.machinelearning.lib.Global;
+import me.micha.machinelearning.lib.Matrix;
 
-public class TrainingData {
+public class DataSet {
 
 	private Entry[] entries;
 	private int c = 0;
-	private Random rand;
 	
-	public TrainingData(int set_size) {
+	//Datensatz mit fester Größe
+	public DataSet(int set_size) {
 		entries = new Entry[set_size];
 	}
 	
@@ -24,23 +25,28 @@ public class TrainingData {
 	}
 	
 	public Entry getEntry(int index) {
-		return entries[index];
+		try {
+			return entries[index];
+		} catch(Exception ex) {
+			return null;
+		}
 	}
 	
 	public int length() {
 		return entries.length;
 	}
 	
+	//Zufälliger Eintrag im Datensatz
 	public Entry randomData() {
-		if(rand == null) rand = new Random();
-		
-		return getEntry(rand.nextInt(entries.length));
+		return getEntry(Global.RAND.nextInt(entries.length));
 	}
 	
+	//Input-Größe. Bei Mnist = 784
 	public int getInputSize() {
 		return entries[0].getInput().rows;
 	}
 	
+	//Output-Größe. Bei Mnist = 10 (für jede Ziffer eine Node)
 	public int getAnswerSize() {
 		return entries[0].getAnswer().rows;
 	}

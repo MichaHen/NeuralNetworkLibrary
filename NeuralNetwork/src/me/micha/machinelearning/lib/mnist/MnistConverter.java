@@ -1,29 +1,30 @@
-package me.micha.machinelearning.mnist;
+package me.micha.machinelearning.lib.mnist;
 
 import java.util.List;
 
-import me.micha.machinelearning.Matrix;
-import me.micha.machinelearning.TrainingData;
+import me.micha.machinelearning.lib.Matrix;
+import me.micha.machinelearning.lib.trainingdata.DataSet;
 
 public class MnistConverter {
-
-	private static TrainingData data, testData;
 	
-	public static void load() {
+	//Speichern des Trainings- und Testdatensatzes
+	private static DataSet data, testData;
+	
+	public static void load(String path) {
 		System.out.println("Loading data...");
-		int[] labels = MnistReader.getLabels("train-labels.idx1-ubyte");
-		List<int[][]> images = MnistReader.getImages("train-images.idx3-ubyte");
+		int[] labels = MnistReader.getLabels(path + "train-labels.idx1-ubyte");
+		List<int[][]> images = MnistReader.getImages(path + "train-images.idx3-ubyte");
 		
-		int[] labels2 = MnistReader.getLabels("t10k-labels.idx1-ubyte");
-		List<int[][]> images2 = MnistReader.getImages("t10k-images.idx3-ubyte");
+		int[] labels2 = MnistReader.getLabels(path + "t10k-labels.idx1-ubyte");
+		List<int[][]> images2 = MnistReader.getImages(path + "t10k-images.idx3-ubyte");
 		
-		data = new TrainingData(labels.length);
+		data = new DataSet(labels.length);
 		
 		for(int i = 0; i < labels.length; i++) {
 			data.addEntry(Matrix.fromArray(toInput(images.get(i))), Matrix.fromArray(toAnswer(labels[i])));
 		}
 		
-		testData = new TrainingData(labels2.length);
+		testData = new DataSet(labels2.length);
 		
 		for(int i = 0; i < labels2.length; i++) {
 			testData.addEntry(Matrix.fromArray(toInput(images2.get(i))), Matrix.fromArray(toAnswer(labels2[i])));
@@ -31,14 +32,15 @@ public class MnistConverter {
 		System.out.println("Loaded data!");
 	}
 	
-	public static TrainingData getData() {
+	public static DataSet getData() {
 		return data;
 	}
 	
-	public static TrainingData getTestData() {
+	public static DataSet getTestData() {
 		return testData;
 	}
 	
+	//Matrix-Objekt fetch
 	private static double[] toInput(int[][] matrix) {
  		double[] array = new double[784];
  		
@@ -54,6 +56,8 @@ public class MnistConverter {
  		return array;
  	}
  	
+	//One-Hot-Encoded-Vektor
+	//Am Index, der der Ziffer entspricht wird die Wahrscheinlichkeit auf 1 gesetzt
  	private static double[] toAnswer(int label) {
  		double[] array = new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
  		array[label] = 1;

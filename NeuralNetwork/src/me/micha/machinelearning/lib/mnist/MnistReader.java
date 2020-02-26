@@ -1,4 +1,4 @@
-package me.micha.machinelearning.mnist;
+package me.micha.machinelearning.lib.mnist;
 
 import static java.lang.String.format;
 
@@ -9,7 +9,10 @@ import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 
+//KEIN BESTANDTEIL DER FACHARBEIT!
+//Hilfsklasse zum Extrahieren der Daten aus dem Dateiformat von MNIST. Quelle: https://github.com/jeffgriffith/mnist-reader/blob/master/src/main/java/mnist/MnistReader.java
 public class MnistReader {
+	
 	public static final int LABEL_FILE_MAGIC_NUMBER = 2049;
 	public static final int IMAGE_FILE_MAGIC_NUMBER = 2051;
 
